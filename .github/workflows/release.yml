@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set version in manifest
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          DOMAIN_DIR=$(ls -d custom_components/*/)
+          jq --arg v "$VERSION" '.version = $v' "${DOMAIN_DIR}manifest.json" > m.tmp && mv m.tmp "${DOMAIN_DIR}manifest.json"
+      - name: Zip
+        run: |
+          DOMAIN=$(basename $(ls -d custom_components/*/))
+          cd "custom_components/$DOMAIN" && zip -r "$GITHUB_WORKSPACE/$DOMAIN.zip" . -x "__pycache__/*"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: "*.zip"

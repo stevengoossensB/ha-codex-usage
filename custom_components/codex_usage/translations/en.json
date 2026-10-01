@@ -1,0 +1,61 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Codex Usage",
+        "description": "What do you want to monitor?",
+        "menu_options": {
+          "subscription": "Codex limits of my ChatGPT plan (sign in)",
+          "import_auth_json": "Codex limits of my ChatGPT plan (paste auth.json)",
+          "admin_api": "OpenAI API token usage and cost (Admin API key)"
+        }
+      },
+      "subscription": {
+        "title": "Sign in with ChatGPT",
+        "description": "1. [Open the ChatGPT sign-in page]({auth_url}) and log in.\n2. Your browser is then sent to `{redirect_uri}?code=…`. That page will **fail to load** — that is expected.\n3. Copy the **full URL** from the address bar and paste it below.\n\nThis gives Home Assistant its own login, separate from the Codex CLI.",
+        "data": {
+          "redirect_url": "Redirect URL"
+        }
+      },
+      "import_auth_json": {
+        "title": "Import Codex credentials",
+        "description": "Paste the contents of `~/.codex/auth.json` (Windows: `%USERPROFILE%\\.codex\\auth.json`).\n\n**Warning:** OpenAI refresh tokens are single-use. Once Home Assistant refreshes this token, the Codex CLI on that computer has to log in again. Prefer *sign in*, or run `codex login` with a separate `CODEX_HOME` and import that file.",
+        "data": {
+          "auth_json": "auth.json contents"
+        }
+      },
+      "admin_api": {
+        "title": "OpenAI Admin API",
+        "description": "Create an Admin key (starts with `sk-admin-`) at platform.openai.com → Settings → Organization → Admin keys.",
+        "data": {
+          "admin_key": "Admin API key"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate",
+        "description": "The stored credentials no longer work. Continue to sign in again."
+      }
+    },
+    "error": {
+      "invalid_auth": "Authentication failed. Try again (the sign-in link has been renewed).",
+      "invalid_code": "No authorization code found in what you pasted.",
+      "invalid_auth_json": "That doesn't look like a ChatGPT-login auth.json (no tokens found).",
+      "state_mismatch": "That URL belongs to a different sign-in attempt. Use the link shown on this page.",
+      "cannot_connect": "Could not reach OpenAI. Try again later."
+    },
+    "abort": {
+      "already_configured": "This account is already configured.",
+      "reauth_successful": "Re-authentication successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Polling",
+        "data": {
+          "scan_interval": "Update interval (seconds)"
+        }
+      }
+    }
+  }
+}
